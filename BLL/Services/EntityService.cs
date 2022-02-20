@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BLL.Services.Bases
 {
     public abstract class EntityService<TEntity, TKey>
-         where TEntity : class, IIdHas<TKey>
+         where TEntity : class, IIdHasInt<TKey>
          where TKey : IEquatable<TKey>
     {
         protected DbSet<TEntity> Entities { get; set; }
@@ -68,14 +68,14 @@ namespace BLL.Services.Bases
                 : count / size + (count % size > 0 ? 1 : 0);
         }
 
-        public virtual async Task<T> ById<T>(TKey id) where T : class, IIdHas<TKey>
+        public virtual async Task<T> ById<T>(TKey id) where T : class, IIdHasInt<TKey>
         {
             return await Entities
                 .ProjectToType<T>()
                 .ById(id);
         }
 
-        public virtual async Task Edit<T>(T model) where T : IIdHas<TKey>
+        public virtual async Task Edit<T>(T model) where T : IIdHasInt<TKey>
         {
             var entity = await Entities.ById(model.Id);
             model.Adapt(entity);

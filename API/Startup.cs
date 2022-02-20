@@ -1,3 +1,4 @@
+using API.Extensions;
 using DAL.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,10 +26,10 @@ namespace Thesis
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), o => o.CommandTimeout(90)));
+            services.AddServices();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -36,7 +37,6 @@ namespace Thesis
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
