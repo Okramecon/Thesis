@@ -1,0 +1,22 @@
+name: Thesis-api-workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: azure/docker-login@v1
+        with:
+          login-server: cr.yandex
+          username: ${{ secrets.CR_USERNAME }}
+          password: ${{ secrets.CR_PASSWORD }}
+
+      - run: |
+          docker build . -t cr.yandex/crpace1ttbhh9ft73f8m/thesis-api-image:latest
+          docker push cr.yandex/crpace1ttbhh9ft73f8m/thesis-api-image:latest
