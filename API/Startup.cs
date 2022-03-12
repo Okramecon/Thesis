@@ -30,6 +30,10 @@ namespace Thesis
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Thesis", Version = "v1" });
             });
+
+            services.RegisterIOptions(Configuration);
+            services.RegisterJwtAuthorization(Configuration);
+            services.RegisterAuth();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,7 +45,9 @@ namespace Thesis
             app.UseRouting();
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
