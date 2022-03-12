@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions;
 using Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ namespace DAL.Extensions
             where TKey : IEquatable<TKey>
         {
             return await entities.FirstOrDefaultAsync(x => x.Id.Equals(id))
-                   ?? throw new Exception($"Сущность '{typeof(T).Name}' с кодом = '{id}' не найдена.");
+                   ?? throw new InnerException($"Сущность '{typeof(T).Name}' с кодом = '{id}' не найдена.", "e5804923-bf86-43e1-8f16-68eb81d8cfef");
         }
     }
 }

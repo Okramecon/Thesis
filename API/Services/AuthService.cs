@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Exceptions;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -49,7 +50,7 @@ namespace API.Services
             var user = await UserManager.FindByNameAsync(userName);
             if (!(await UserManager.CheckPasswordAsync(user, password)))
             {
-                throw new Exception($"2. Неверный пароль");
+                throw new InnerException($"Неверный пароль", "def0b2be-eb51-48d1-8b89-68961705f2e4");
             }
             var (claims, roleNames) = await GetClaimsRoleNames(user);
 
