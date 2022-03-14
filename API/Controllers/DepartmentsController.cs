@@ -3,22 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Model.Models.DepartmentModels;
+using static Model.Models.ProjectModels;
 
 namespace API.Controllers
 {
     public class DepartmentsController : BaseController
     {
         private readonly DepartmentService _departmentService;
+        private readonly ProjectService _projectService;
 
-        public DepartmentsController(DepartmentService departmentService)
+        public DepartmentsController(DepartmentService departmentService, ProjectService projectService)
         {
             _departmentService = departmentService;
+            _projectService = projectService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<GetDepartmentModel>> List()
         {
             return await _departmentService.List<GetDepartmentModel>();
+        }
+
+        [HttpGet]
+        [Route("{id}/projects")]
+        public async Task<IEnumerable<GetProjectModel>> ProjectList(int id)
+        {
+            return await _projectService.GetProjectsByDepartmentId(id);
         }
 
         [HttpGet("{id}")]
