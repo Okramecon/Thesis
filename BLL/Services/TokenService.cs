@@ -26,11 +26,13 @@ namespace BLL.Services
 
         public async Task<string> CreateEmailToken(string userId)
         {
+            var randomString = StringExtensions.GetUniqueKey(EmailConfirmationTokenLength);
             var token = new IdentityUserToken<string>
             {
                 UserId = userId,
-                Value = StringExtensions.GetUniqueKey(EmailConfirmationTokenLength),
-                Name = TokenType.EmailConfirmation.ToString()
+                Value = randomString,
+                Name = TokenType.EmailConfirmation.ToString(),
+                LoginProvider = randomString,
             };
 
             AppDbContext.UserTokens.Add(token);

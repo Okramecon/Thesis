@@ -7,6 +7,7 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Model.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -19,11 +20,14 @@ namespace BLL.Services
 
         private EmailService EmailService { get; }
 
-        public UserService(UserManager<User> users, TokenService tokenService, EmailService emailService)
+        private AppDbContext AppDbContext { get; }
+
+        public UserService(UserManager<User> users, TokenService tokenService, EmailService emailService, AppDbContext appDbContext)
         {
             Users = users;
             TokenService = tokenService;
             EmailService = emailService;
+            AppDbContext = appDbContext;
         }
 
         public async Task<string> RegisterAsync(UserModel.AddIn model)
@@ -39,7 +43,7 @@ namespace BLL.Services
             {
                 if(!existingUser.EmailConfirmed)
                 {
-                    throw new InnerException("Confirmation code has been sent your email", "fb8898d9-a414-4229-97af-14a7de5eee5d");
+                    throw new InnerException("Confirmation code has been sent to your email", "fb8898d9-a414-4229-97af-14a7de5eee5d");
                 }
 
                 throw new InnerException("User with such email already exists", "fb8898d9-a414-4229-97af-14a7de5eee5d");
@@ -85,12 +89,22 @@ namespace BLL.Services
             {
                 throw new InnerException($"No such user with id {id}", "844601d4-c37b-4602-abec-5eeb5e9c67db");
             }
+
+            if (!user.EmailConfirmed)
+            {
+                throw new InnerException("Confirmation code has been sent to your email", "7658d877-825e-4ff7-a447-1d197fd23181");
+            }
+
             user = model.Adapt(user);
             await Users.UpdateAsync(user);
         }
 
         public async Task<T> GetById<T>(string id)
         {
+            AppDbContext.RemoveRange(AppDbContext.UserRoles.ToList());
+            AppDbContext.RemoveRange(AppDbContext.UserTokens.ToList());
+            AppDbContext.RemoveRange(AppDbContext.Users.ToList());
+            AppDbContext.SaveChanges();
             var user = await Users.FindByIdAsync(id);
             if(user.IsNull())
             {
