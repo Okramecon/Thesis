@@ -1,5 +1,6 @@
 ﻿using Common.Enums;
 using Common.Exceptions;
+using Common.Extensions;
 using DAL.Entities;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
@@ -55,6 +56,10 @@ namespace BLL.Services
         public async Task<T> GetById<T>(string id)
         {
             var user = await Users.FindByIdAsync(id);
+            if(user.IsNull())
+            {
+                throw new InnerException($"No such user with id {id}", "844601d4-c37b-4602-abec-5eeb5e9c67db");
+            }
             return user.Adapt<T>();
         }
 
