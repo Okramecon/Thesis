@@ -6,6 +6,12 @@ namespace DAL.Entities
 {
     public class User : IdentityUser, IIdHasInt<string>
     {
+        //public string FirstName { get; set; }
+
+        //public string LastName { get; set; }
+
+        //public string ProfilePictureId { get; set; }
+
         public virtual ICollection<UserRole> Roles { get; set; }
     }
 }

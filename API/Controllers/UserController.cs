@@ -26,16 +26,6 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// List of all users
-        /// </summary>
-        [HttpGet]
-        [Route("List")]
-        public async Task<IEnumerable<UserModel.ListOut>> ListAsync()
-        {
-            return await Service.List<UserModel.ListOut>();
-        }
-
-        /// <summary>
         /// Get user by Id
         /// </summary>
         [HttpGet]
@@ -44,6 +34,9 @@ namespace API.Controllers
         {
             return await Service.GetById<UserModel.ByIdOut>(id);
         }
+
+        // todo add me endpoint, extracting user id from bearer token, replace byId endpoint
+        // replace edit by id with edit me
 
         /// <summary>
         /// Edits user

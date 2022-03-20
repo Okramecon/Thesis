@@ -33,12 +33,8 @@ namespace API.Middleware
                 var model = new BadRequestModel
                 {
                     Status = status,
-                    Title = "Model data error",
                     ExceptionCode = ex.ExceptionCode,
-                    Errors = new Dictionary<string, IEnumerable<string>>
-                    {
-                        { ex.PropertyName ?? "Alert", new string[]{ ex.Message } }
-                    }
+                    Message = ex.Message
                 };
 
                 await context.Response.WriteAsync(model.ToJson());
@@ -51,11 +47,7 @@ namespace API.Middleware
                 var model = new BadRequestModel
                 {
                     Status = status,
-                    Title = "Internal Server Error",
-                    Errors = new Dictionary<string, IEnumerable<string>>
-                    {
-                        { "Alert", new string[]{ ex.Message } }
-                    }
+                    Message = ex.Message
                 };
 
                 await context.Response.WriteAsync(model.ToJson());

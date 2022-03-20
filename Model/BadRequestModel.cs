@@ -10,14 +10,9 @@ namespace Model
         public int Status { get; set; }
 
         /// <summary>
-        /// Title
+        /// Error
         /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Errors
-        /// </summary>
-        public IDictionary<string, IEnumerable<string>> Errors { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Exception Code

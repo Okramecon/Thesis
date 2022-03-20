@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Exceptions;
+using Common.Extensions;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -48,10 +49,22 @@ namespace API.Services
         private async Task<(User, IEnumerable<Claim>, IEnumerable<string>)> GetUserClaimsRoleNames(string userName, string password)
         {
             var user = await UserManager.FindByNameAsync(userName);
+
+            if(user.IsNull())
+            {
+                throw new InnerException($"User with such email doesn't exist", "a735b751-9f3f-4af3-b015-78a521e0cf3d");
+            }
+
             if (!(await UserManager.CheckPasswordAsync(user, password)))
             {
                 throw new InnerException($"Неверный пароль", "def0b2be-eb51-48d1-8b89-68961705f2e4");
             }
+
+            if(!user.EmailConfirmed)
+            {
+                throw new InnerException("Confirmation code has been sent to your email", "a90f5a01-c77d-4d51-ac23-c2b89372de80");
+            }
+
             var (claims, roleNames) = await GetClaimsRoleNames(user);
 
             return (user, claims, roleNames);
