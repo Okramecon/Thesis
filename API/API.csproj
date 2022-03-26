@@ -27,9 +27,11 @@
     <None Remove="Services\" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="Middleware\" />
+    <None Remove="Infrastructure\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Middleware\" />
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
 </Project>
