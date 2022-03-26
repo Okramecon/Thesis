@@ -14,7 +14,12 @@ namespace BLL.Services
         public void SendEmailConfirmation(string token, string email)
         {
             string fromEmail = "ThesisTicketManager@gmail.com";
-            MailMessage mailMessage = new(fromEmail, email, "Confirm your account", $"<a href=\"http://84.252.140.218:5001/token/{token}\">Confirm</a>");
+            MailMessage mailMessage = new(fromEmail, email, "Confirm your registration", $"<a href=\"thesis.uno/token/{token}\">Confirm</a>")
+            {
+                BodyEncoding = System.Text.Encoding.UTF8,
+                IsBodyHtml = true,
+            };
+
             SmtpClient smtpClient = new("smtp.gmail.com", 587);
             smtpClient.EnableSsl = true;
             smtpClient.UseDefaultCredentials = false;
