@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Model.Models.ProjectModels;
+using static Model.Models.TicketModels;
 
 namespace API.Controllers
 {
@@ -24,6 +25,12 @@ namespace API.Controllers
         public async Task<GetProjectModel> Get(int id)
         {
             return await _projectService.ById<GetProjectModel>(id);
+        }
+
+        [HttpGet("{id}/tickets")]
+        public async Task<IEnumerable<GetTicketModel>> GetTickets(int id)
+        {
+            return await _projectService.GetTicketsByProjectIdAsync(id);
         }
 
         [HttpPost]

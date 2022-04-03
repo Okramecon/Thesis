@@ -6,7 +6,11 @@ namespace BLL.Services
 {
     public class TicketService : EntityService<Ticket, int>
     {
-        public TicketService(AppDbContext context) : base(context, context.Tickets) { }
+        private readonly ProjectService _projectService;
 
+        public TicketService(AppDbContext context, ProjectService projectService) : base(context, context.Tickets)
+        {
+            _projectService = projectService;
+        }
     }
 }

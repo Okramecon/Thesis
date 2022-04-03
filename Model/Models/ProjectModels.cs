@@ -1,5 +1,7 @@
 ﻿using Common.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using static Model.Models.BoardModels;
 
 namespace Model.Models
 {
@@ -15,6 +17,11 @@ namespace Model.Models
             public int DepartmentId { get; set; }
 
             //public ICollection<Board> Boards { get; set; }
+        }
+
+        public class GetDetailProjectModel : GetProjectModel
+        {
+            public ICollection<GetDetailBoardModel> Boards { get; set; }
         }
 
         public class AddProjectModel

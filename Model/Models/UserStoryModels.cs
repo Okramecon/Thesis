@@ -1,5 +1,7 @@
 ﻿using Common.Interfaces;
 using System;
+using System.Collections.Generic;
+using static Model.Models.TicketModels;
 
 namespace Model.Models
 {
@@ -12,8 +14,11 @@ namespace Model.Models
             public string Details { get; set; }
             public DateTime CreatedDateTime { get; set; }
             public int BoardId { get; set; }
+        }
 
-            //public ICollection<Ticket> Tickets { get; set; }
+        public class GetDetailUserStoryModel : GetUserStoryModel
+        {
+            public ICollection<GetTicketModel> Tickets { get; set; }
         }
 
         public class AddUserStoryModel
