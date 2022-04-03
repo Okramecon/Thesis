@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Model.Models.ProjectModels;
+using static Model.Models.TicketModels;
 
 namespace BLL.Services
 {
@@ -27,5 +28,12 @@ namespace BLL.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<GetTicketModel>> GetTicketsByProjectIdAsync(int id)
+        {
+            var project = await ById<GetDetailProjectModel>(id);
+            return project.Boards
+                .SelectMany(x => x.UserStories)
+                .SelectMany(x => x.Tickets);
+        }
     }
 }

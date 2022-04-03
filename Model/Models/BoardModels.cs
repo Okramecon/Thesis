@@ -1,5 +1,7 @@
 ﻿using Common.Interfaces;
 using System;
+using System.Collections.Generic;
+using static Model.Models.UserStoryModels;
 
 namespace Model.Models
 {
@@ -11,8 +13,11 @@ namespace Model.Models
             public string Title { get; set; }
             public DateTime CreatedDateTime { get; set; }
             public int ProjectId { get; set; }
+        }
 
-            //public ICollection<UserStory> UserStories { get; set; }
+        public class GetDetailBoardModel : GetBoardModel
+        {
+            public ICollection<GetDetailUserStoryModel> UserStories { get; set; }
         }
 
         public class AddBoardModel
