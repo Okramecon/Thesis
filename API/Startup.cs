@@ -1,4 +1,5 @@
 using API.Extensions;
+using API.Middleware;
 using DAL.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,23 +31,25 @@ namespace Thesis
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Thesis", Version = "v1" });
             });
+
+            services.RegisterIOptions(Configuration);
+            services.RegisterJwtAuthorization(Configuration);
+            services.RegisterAuth();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Thesis v1"));
-            }
-
-            app.UseHttpsRedirection();
+            app.UseDeveloperExceptionPage();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Thesis v1"));   
 
             app.UseRouting();
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
