@@ -1,5 +1,4 @@
-﻿
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using API.Infrastructure;
 using BLL.Services;
 using Common.Enums;
@@ -8,7 +7,9 @@ using Model.Models;
 
 namespace API.Controllers
 {
-    public class NewsController : BaseController
+    [ApiController]
+    [Route("api/News")]
+    public class NewsController
     {
         private NewsService NewsService { get; set; }
 
@@ -22,15 +23,14 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<NewsModels.ByIdOut> GetById(int id)
+        public async Task<NewsModels.ById> ById(int id)
         {
             return await NewsService.GetById(id);
         }
 
         [HttpPost]
-        [Route("")]
-        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
-        public async Task<int> Add(NewsModels.AddIn model)
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
+        public async Task<int> Add(NewsModels.Add model)
         {
             return await NewsService.Add(model, CurrentUserService.GetCurrentUserId());
         }

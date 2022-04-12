@@ -24,13 +24,13 @@ namespace BLL.Services
             Users = appDbContext.Users;
         }
 
-        public async Task<NewsModels.ByIdOut> GetById(int id)
+        public async Task<NewsModels.ById> GetById(int id)
         {
             var entity = await News.ById(id);
-            return entity.Adapt<NewsModels.ByIdOut>();
+            return entity.Adapt<NewsModels.ById>();
         }
 
-        public async Task<int> Add(NewsModels.AddIn model, string id)
+        public async Task<int> Add(NewsModels.Add model, string id)
         {
             var entity = model.Adapt<News>();
 

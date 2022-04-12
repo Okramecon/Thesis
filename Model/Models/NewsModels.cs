@@ -5,7 +5,7 @@ namespace Model.Models
 {
     public static class NewsModels
     {
-        public class ByIdOut
+        public class ById
         {
             public int Id { get; set; }
 
@@ -13,12 +13,12 @@ namespace Model.Models
 
             public string Body { get; set; }
 
-            public UserModel.ByIdOut Author { get; set; }
+            public UserModels.ByIdOut Author { get; set; }
 
             public DateTime CreatedDateTime { get; set; }
         }
 
-        public class AddIn
+        public class Add
         {
             public string Title { get; set; }
 

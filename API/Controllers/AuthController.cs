@@ -15,10 +15,13 @@ namespace API.Controllers
 
         private RoleManager<Role> RoleManager { get; set; }
 
-        public AuthController(AuthService authService, RoleManager<Role> roleManager)
+        private UserManager<User> UserManager{ get; set; }
+
+        public AuthController(AuthService authService, RoleManager<Role> roleManager, UserManager<User> userManager)
         {
             AuthService = authService;
             RoleManager = roleManager;
+            UserManager = userManager;
         }
 
         [HttpPost]
@@ -43,6 +46,16 @@ namespace API.Controllers
         public async Task<IEnumerable<Role>> GetAllRoles()
         {
             return await RoleManager.Roles.ToListAsync();
+        }
+
+        [HttpPost]
+        [Route("AddToRoles")]
+        public async Task AddToRoles(string userId, IEnumerable<string> roles)
+        {
+            var user = await UserManager.FindByIdAsync(userId);
+            await UserManager.AddToRolesAsync(
+                user,
+                roles);
         }
     }
 }
