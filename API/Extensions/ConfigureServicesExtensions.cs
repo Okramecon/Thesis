@@ -28,6 +28,7 @@ namespace API.Extensions
             services.AddScoped<AuthService>();
             services.AddScoped<EmailService>();
             services.AddScoped<TokenService>();
+            services.AddScoped<CommentService>();
         }
 
         public static void AddCors(this IServiceCollection services, IConfiguration configuration)
