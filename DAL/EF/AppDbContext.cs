@@ -17,6 +17,7 @@ namespace DAL.EF
         public DbSet<Board> Boards { get; set; }
         public DbSet<UserStory> UserStories { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
