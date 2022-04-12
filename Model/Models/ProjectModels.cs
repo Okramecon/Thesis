@@ -7,7 +7,7 @@ namespace Model.Models
 {
     public static class ProjectModels
     {
-        public class GetProjectModel : IIdHasInt
+        public class GetProjectModel : IIdHas<int>
         {
             public int Id { get; set; }
             [MaxLength(20)]
@@ -32,7 +32,7 @@ namespace Model.Models
             public int DepartmentId { get; set; }
         }
 
-        public class EditProjectModel : IIdHasInt
+        public class EditProjectModel : IIdHas<int>
         {
             [Required]
             public int Id { get; set; }

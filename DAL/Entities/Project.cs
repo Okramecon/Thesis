@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Entities
 {
-    public class Project : IIdHasInt
+    public class Project : IIdHas<int>
     {
         public int Id { get; set; }
         [MaxLength(20)]

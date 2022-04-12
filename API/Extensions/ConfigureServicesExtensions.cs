@@ -12,6 +12,7 @@ using DAL.Entities;
 using DAL.EF;
 using Microsoft.AspNetCore.Identity;
 using API.Services;
+using API.Infrastructure;
 
 namespace API.Extensions
 {
@@ -28,6 +29,8 @@ namespace API.Extensions
             services.AddScoped<AuthService>();
             services.AddScoped<EmailService>();
             services.AddScoped<TokenService>();
+            services.AddScoped<NewsService>();
+            services.AddScoped<CurrentUserService>();
         }
 
         public static void AddCors(this IServiceCollection services, IConfiguration configuration)

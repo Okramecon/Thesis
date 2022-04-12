@@ -31,6 +31,7 @@ namespace Thesis
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Thesis", Version = "v1" });
             });
+            services.AddHttpContextAccessor();
 
             services.RegisterIOptions(Configuration);
             services.RegisterJwtAuthorization(Configuration);

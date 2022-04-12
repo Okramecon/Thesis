@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DAL.Entities
 {
-    public class UserStory : IIdHasInt
+    public class UserStory : IIdHas<int>
     {
         public int Id { get; set; }
         public string Title { get; set; }

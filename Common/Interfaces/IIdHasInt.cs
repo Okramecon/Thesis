@@ -1,12 +1,8 @@
 ﻿
 namespace Common.Interfaces
 {
-    public interface IIdHasInt<T>
+    public interface IIdHas<T>
     {
         T Id { get; set; }
     }
-
-    public interface IIdHasInt : IIdHasInt<int> { }
-
-    public interface IIdHasIntNullable : IIdHasInt<int?> { }
 }

@@ -47,7 +47,7 @@ namespace API.Middleware
                 var model = new BadRequestModel
                 {
                     Status = status,
-                    Message = ex.Message
+                    Message = ex.ToString()
                 };
 
                 await context.Response.WriteAsync(model.ToJson());
