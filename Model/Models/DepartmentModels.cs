@@ -5,7 +5,7 @@ namespace Model.Models
 {
     public static class DepartmentModels
     {
-        public class GetDepartmentModel : IIdHasInt
+        public class GetDepartmentModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -20,7 +20,7 @@ namespace Model.Models
             public string Summary { get; set; }
         }
 
-        public class EditDepartmentModel : IIdHasInt
+        public class EditDepartmentModel : IIdHas<int>
         {
             [Required]
             public int Id { get; set; }

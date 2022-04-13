@@ -7,6 +7,7 @@ using Common.Extensions;
 using DAL.EF;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -55,6 +56,11 @@ namespace BLL.Services
             AppDbContext.Remove(token);
 
             await AppDbContext.SaveChangesAsync();
+        }
+
+        public async Task<string> GetEmailTokenByUserId(string userId)
+        {
+            return (await AppDbContext.UserTokens.FirstOrDefaultAsync(x => x.UserId == userId && x.Name == TokenType.EmailConfirmation.ToString()))?.Value;
         }
     }
 }

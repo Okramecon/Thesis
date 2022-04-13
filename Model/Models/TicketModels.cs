@@ -7,7 +7,7 @@ namespace Model.Models
 {
     public static class TicketModels
     {
-        public class GetTicketModel : IIdHasInt
+        public class GetTicketModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -25,7 +25,7 @@ namespace Model.Models
             public int UserStoryid { get; set; }
         }
 
-        public class EditTicketModel : IIdHasInt
+        public class EditTicketModel : IIdHas<int>
         {
             [Required]
             public int Id { get; set; }

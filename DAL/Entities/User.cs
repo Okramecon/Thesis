@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Entities
 {
-    public class User : IdentityUser, IIdHasInt<string>
+    public class User : IdentityUser, IIdHas<string>
     {
         //public string FirstName { get; set; }
 

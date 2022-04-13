@@ -30,7 +30,7 @@ namespace BLL.Services
             AppDbContext = appDbContext;
         }
 
-        public async Task<string> RegisterAsync(UserModel.AddIn model)
+        public async Task<string> RegisterAsync(UserModels.AddIn model)
         {
             if(!model.UserName.IsValidEmail())
             {
@@ -101,10 +101,6 @@ namespace BLL.Services
 
         public async Task<T> GetById<T>(string id)
         {
-            AppDbContext.RemoveRange(AppDbContext.UserRoles.ToList());
-            AppDbContext.RemoveRange(AppDbContext.UserTokens.ToList());
-            AppDbContext.RemoveRange(AppDbContext.Users.ToList());
-            AppDbContext.SaveChanges();
             var user = await Users.FindByIdAsync(id);
             if(user.IsNull())
             {

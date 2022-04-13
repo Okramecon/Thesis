@@ -2,7 +2,7 @@
 
 namespace Model.Models
 {
-    public abstract class UserModel
+    public static class UserModels
     {
         public class AddIn
         {

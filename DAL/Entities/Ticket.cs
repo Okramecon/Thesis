@@ -4,7 +4,7 @@ using System;
 
 namespace DAL.Entities
 {
-    public class Ticket : IIdHasInt
+    public class Ticket : IIdHas<int>
     {
         public int Id { get; set; }
         public string Title { get; set; }

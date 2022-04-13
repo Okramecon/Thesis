@@ -7,7 +7,7 @@ namespace Model.Models
 {
     public static class BoardModels
     {
-        public class GetBoardModel : IIdHasInt
+        public class GetBoardModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -26,7 +26,7 @@ namespace Model.Models
             public int ProjectId { get; set; }
         }
 
-        public class EditBoardModel : IIdHasInt
+        public class EditBoardModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string Title { get; set; }
