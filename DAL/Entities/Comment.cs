@@ -3,7 +3,7 @@ using System;
 
 namespace DAL.Entities
 {
-    public class Comment : IIdHasInt
+    public class Comment : IIdHas<int>
     {
         public int Id { get; set; }
         public string UserId { get; set; }

@@ -5,7 +5,7 @@ namespace Model.Models
 {
     public class CommentModels
     {
-        public class GetCommentModel : IIdHasInt
+        public class GetCommentModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string UserId { get; set; }
@@ -13,7 +13,7 @@ namespace Model.Models
             public string Message { get; set; }
             public DateTime SendTime { get; set; }
 
-            public UserModel.ByIdOut User { get; set; }
+            public UserModels.ByIdOut User { get; set; }
         }
 
         public class AddCommentModel
