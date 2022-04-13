@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Model.Models.CommentModels;
 using static Model.Models.TicketModels;
 
 namespace API.Controllers
@@ -9,10 +10,12 @@ namespace API.Controllers
     public class TicketsController : BaseController
     {
         private readonly TicketService _ticketService;
+        private readonly CommentService _commentService;
 
-        public TicketsController(TicketService ticketService)
+        public TicketsController(TicketService ticketService, CommentService commentService)
         {
             _ticketService = ticketService;
+            _commentService = commentService;
         }
 
         [HttpGet]
@@ -25,6 +28,12 @@ namespace API.Controllers
         public async Task<GetTicketModel> Get(int id)
         {
             return await _ticketService.ById<GetTicketModel>(id);
+        }
+
+        [HttpGet("{id}/comments")]
+        public async Task<IEnumerable<GetCommentModel>> GetComments(int id)
+        {
+            return await _commentService.GetTicketCommentsAsync(id);
         }
 
         [HttpPost]
