@@ -7,7 +7,7 @@ namespace Model.Models
 {
     public static class UserStoryModels
     {
-        public class GetUserStoryModel : IIdHasInt
+        public class GetUserStoryModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -28,7 +28,7 @@ namespace Model.Models
             public int BoardId { get; set; }
         }
 
-        public class EditUserStoryModel : IIdHasInt
+        public class EditUserStoryModel : IIdHas<int>
         {
             public int Id { get; set; }
             public string Title { get; set; }

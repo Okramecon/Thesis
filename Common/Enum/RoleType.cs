@@ -14,6 +14,12 @@ namespace Common.Enums
         /// User
         /// </summary>
         [Description("User")]
-        User = 2
+        User = 2,
+
+        /// <summary>
+        /// DepartmentAdmin
+        /// </summary>
+        [Description("DepartmentAdmin")]
+        DepartmentAdmin = 3
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DAL.Entities
 {
-    public class Board : IIdHasInt
+    public class Board : IIdHas<int>
     {
         public int Id { get; set; }
         public string Title { get; set; }

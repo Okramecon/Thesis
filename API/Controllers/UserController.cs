@@ -20,7 +20,7 @@ namespace API.Controllers
         /// </summary>
         [HttpPost]
         [Route("")]
-        public async Task<string> Register(UserModel.AddIn model)
+        public async Task<string> Register(UserModels.AddIn model)
         {
             return await Service.RegisterAsync(model);
         }
@@ -30,9 +30,9 @@ namespace API.Controllers
         /// </summary>
         [HttpGet]
         [Route("{id}")]
-        public async Task<UserModel.ByIdOut> ById(string id)
+        public async Task<UserModels.ByIdOut> ById(string id)
         {
-            return await Service.GetById<UserModel.ByIdOut>(id);
+            return await Service.GetById<UserModels.ByIdOut>(id);
         }
 
         // todo add me endpoint, extracting user id from bearer token, replace byId endpoint
@@ -43,7 +43,7 @@ namespace API.Controllers
         /// </summary>
         [HttpPut]
         [Route("{id}")]
-        public async Task EditUser(string id, UserModel.EditIn model)
+        public async Task EditUser(string id, UserModels.EditIn model)
         {
             await Service.Edit(id, model);
         }

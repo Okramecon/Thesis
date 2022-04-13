@@ -27,10 +27,8 @@ namespace Thesis
             services.AddCors(Configuration);
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Thesis", Version = "v1" });
-            });
+            services.RegisterSwagger();
+            services.AddHttpContextAccessor();
 
             services.RegisterIOptions(Configuration);
             services.RegisterJwtAuthorization(Configuration);
@@ -39,10 +37,7 @@ namespace Thesis
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Thesis v1"));   
 
             app.UseRouting();
             app.UseCors();
@@ -50,6 +45,8 @@ namespace Thesis
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Thesis v1"));
 
             app.UseEndpoints(endpoints =>
             {

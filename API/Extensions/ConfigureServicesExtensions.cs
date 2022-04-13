@@ -12,6 +12,11 @@ using DAL.Entities;
 using DAL.EF;
 using Microsoft.AspNetCore.Identity;
 using API.Services;
+using API.Infrastructure;
+using Microsoft.OpenApi.Models;
+using Thesis;
+using System.IO;
+using System.Reflection;
 
 namespace API.Extensions
 {
@@ -28,6 +33,8 @@ namespace API.Extensions
             services.AddScoped<AuthService>();
             services.AddScoped<EmailService>();
             services.AddScoped<TokenService>();
+            services.AddScoped<NewsService>();
+            services.AddScoped<CurrentUserService>();
             services.AddScoped<CommentService>();
         }
 
@@ -81,6 +88,44 @@ namespace API.Extensions
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+        }
+
+        public static void RegisterSwagger(this IServiceCollection services)
+        {
+            var xmlFileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+            var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "Thesis" });
+
+                x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "bearer",
+                });
+
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+                x.CustomSchemaIds(t => t.FullName);
+
+                //x.IncludeXmlComments(xmlFilePath, true);
+            });
         }
     }
 }

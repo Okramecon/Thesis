@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Services;
 using Common.Exceptions;
 using Common.Extensions;
 using DAL.Entities;
@@ -21,10 +22,16 @@ namespace API.Services
 
         private AuthModel.JwtSettings Jwt { get; set; }
 
-        public AuthService(UserManager<User> userManager, IOptions<AuthModel.JwtSettings> jwt)
+        private EmailService EmailService { get; set; }
+
+        private TokenService TokenService { get; set; }
+
+        public AuthService(UserManager<User> userManager, IOptions<AuthModel.JwtSettings> jwt, EmailService emailService, TokenService tokenService)
         {
             UserManager = userManager;
             Jwt = jwt.Value;
+            EmailService = emailService;
+            TokenService = tokenService;
         }
 
         public async Task<AuthModel.Response> AccessToken(AuthModel.Login model)
@@ -62,6 +69,9 @@ namespace API.Services
 
             if(!user.EmailConfirmed)
             {
+                var tokenValue = await TokenService.GetEmailTokenByUserId(user.Id);
+
+                EmailService.SendEmailConfirmation(tokenValue, user.Email);
                 throw new InnerException("Confirmation code has been sent to your email", "a90f5a01-c77d-4d51-ac23-c2b89372de80");
             }
 
