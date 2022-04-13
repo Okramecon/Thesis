@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using API.Infrastructure;
 using BLL.Services;
 using Common.Enums;
@@ -22,17 +23,17 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<NewsModels.ById> ById(int id)
+        [Route("byDepartmentId")]
+        public async Task<List<NewsModels.ById>> ById(int departmentId)
         {
-            return await NewsService.GetById(id);
+            return await NewsService.GetByDepartmentId(departmentId);
         }
 
         [HttpPost]
         //[AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<int> Add(NewsModels.Add model)
         {
-            return await NewsService.Add(model, CurrentUserService.GetCurrentUserId());
+            return await NewsService.Add(model); //CurrentUserService.GetCurrentUserId());
         }
     }
 }

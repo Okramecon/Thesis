@@ -14,5 +14,9 @@ namespace DAL.Entities
         public User Author { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public Department Department { get; set; }
     }
 }

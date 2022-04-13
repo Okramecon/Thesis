@@ -16,6 +16,8 @@ namespace Model.Models
             public UserModels.ByIdOut Author { get; set; }
 
             public DateTime CreatedDateTime { get; set; }
+
+            public int DepartmentId { get; set; }
         }
 
         public class Add
@@ -23,6 +25,8 @@ namespace Model.Models
             public string Title { get; set; }
 
             public string Body { get; set; }
+
+            public int DepartmentId { get; set; }
         }
     }
 }

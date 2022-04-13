@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.EF;
 using DAL.Entities;
-using DAL.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Model.Models;
@@ -24,20 +25,24 @@ namespace BLL.Services
             Users = appDbContext.Users;
         }
 
-        public async Task<NewsModels.ById> GetById(int id)
+        public async Task<List<NewsModels.ById>> GetByDepartmentId(int departmentId)
         {
-            var entity = await News.ById(id);
-            return entity.Adapt<NewsModels.ById>();
+            var news = await News
+                .Where(x => x.DepartmentId == departmentId)
+                .OrderByDescending(x => x.CreatedDateTime)
+                .ProjectToType<NewsModels.ById>()
+                .ToListAsync();
+
+            return news;
         }
 
-        public async Task<int> Add(NewsModels.Add model, string id)
+        public async Task<int> Add(NewsModels.Add model)
         {
             var entity = model.Adapt<News>();
 
             entity.CreatedDateTime = DateTime.UtcNow;
-            entity.Author.Id = id;
             News.Add(entity);
-
+            // to do fix bearer and add author
             await AppDbContext.SaveChangesAsync();
             return entity.Id;
         }
