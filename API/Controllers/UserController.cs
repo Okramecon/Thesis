@@ -40,9 +40,6 @@ namespace API.Controllers
             return await Service.GetById<UserModels.ByIdOut>(id);
         }
 
-        // todo add me endpoint, extracting user id from bearer token, replace byId endpoint
-        // replace edit by id with edit me
-
         /// <summary>
         /// Edits user
         /// </summary>
