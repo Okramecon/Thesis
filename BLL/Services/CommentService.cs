@@ -19,7 +19,6 @@ namespace BLL.Services
         protected override async Task BeforeAdd(Comment entity)
         {
             entity.SendTime = System.DateTime.UtcNow;
-            entity.UserId = (await Context.Users.FirstOrDefaultAsync()).Id;
         }
 
         public async Task<IEnumerable<GetCommentModel>> GetTicketCommentsAsync(int ticketId)
