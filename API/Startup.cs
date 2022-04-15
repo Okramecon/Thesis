@@ -22,23 +22,22 @@ namespace Thesis
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), o => o.CommandTimeout(90)));
-            services.AddServices();
-            services.AddCors(Configuration);
             services.AddControllers();
-
-            services.RegisterSwagger();
             services.AddHttpContextAccessor();
 
-            services.RegisterIOptions(Configuration);
-            services.RegisterJwtAuthorization(Configuration);
             services.RegisterAuth();
+            services.RegisterIOptions(Configuration);
+            services.AddServices();
+            services.RegisterJwtAuthorization(Configuration);
+            services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), o => o.CommandTimeout(90)));
+            services.RegisterSwagger();
+            services.AddCors(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
 

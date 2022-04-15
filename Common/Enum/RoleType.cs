@@ -7,19 +7,19 @@ namespace Common.Enums
         /// <summary>
         /// Admin
         /// </summary>
-        [Description("Admin")]
+        [Description("admin")]
         Admin = 1,
 
         /// <summary>
         /// User
         /// </summary>
-        [Description("User")]
+        [Description("user")]
         User = 2,
 
         /// <summary>
         /// DepartmentAdmin
         /// </summary>
-        [Description("DepartmentAdmin")]
+        [Description("departmentAdmin")]
         DepartmentAdmin = 3
     }
 }

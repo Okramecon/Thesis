@@ -30,10 +30,10 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        //[AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task<int> Add(NewsModels.Add model)
         {
-            return await NewsService.Add(model); //CurrentUserService.GetCurrentUserId());
+            return await NewsService.Add(model, CurrentUserService.GetCurrentUserId());
         }
     }
 }
