@@ -36,13 +36,17 @@ namespace BLL.Services
             return news;
         }
 
-        public async Task<int> Add(NewsModels.Add model)
+        public async Task<int> Add(NewsModels.Add model, string id)
         {
             var entity = model.Adapt<News>();
 
             entity.CreatedDateTime = DateTime.UtcNow;
+            entity.Author = new User
+            {
+                Id = id
+            };
             News.Add(entity);
-            // to do fix bearer and add author
+            
             await AppDbContext.SaveChangesAsync();
             return entity.Id;
         }

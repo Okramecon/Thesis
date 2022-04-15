@@ -1,4 +1,6 @@
-﻿using BLL.Services;
+﻿using API.Infrastructure;
+using BLL.Services;
+using Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,18 +36,21 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task<int> Post(AddProjectModel model)
         {
             return (await _projectService.Add(model)).Id;
         }
 
         [HttpPut]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task Edit(EditProjectModel model)
         {
             await _projectService.Edit(model);
         }
 
         [HttpDelete("{id}")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task Delete(int id)
         {
             await _projectService.Delete(id);

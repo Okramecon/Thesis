@@ -1,7 +1,9 @@
-﻿using BLL.Services;
+﻿using API.Infrastructure;
+using BLL.Services;
+using Common.Enums;
+using Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Model.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -10,9 +12,12 @@ namespace API.Controllers
     {
         private UserService Service { get; }
 
-        public UsersController(UserService userService)
+        private CurrentUserService CurrentUserService { get; }
+
+        public UsersController(UserService userService, CurrentUserService currentUserService)
         {
             Service = userService;
+            CurrentUserService = currentUserService;
         }
 
         /// <summary>
@@ -43,8 +48,14 @@ namespace API.Controllers
         /// </summary>
         [HttpPut]
         [Route("{id}")]
+        [AuthorizeRoles(RoleType.User)]
         public async Task EditUser(string id, UserModels.EditIn model)
         {
+            if(CurrentUserService.GetCurrentUserId() != id)
+            {
+                throw new InnerException("Cannot edit another user!", "76d9eea7-ca9a-4ecb-be75-7f38b273d7ab");
+            }
+
             await Service.Edit(id, model);
         }
     }

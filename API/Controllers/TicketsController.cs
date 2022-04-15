@@ -1,4 +1,6 @@
-﻿using BLL.Services;
+﻿using API.Infrastructure;
+using BLL.Services;
+using Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -37,12 +39,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<int> Post(AddTicketModel model)
         {
             return (await _ticketService.Add(model)).Id;
         }
 
         [HttpPut]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task Edit(EditTicketModel model)
         {
             await _ticketService.Edit(model);
