@@ -10,7 +10,8 @@ namespace DAL.Entities
         public string Title { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public int ProjectId { get; set; }
+        public Project Project { get; set; }
 
-        public ICollection<UserStory> UserStories { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

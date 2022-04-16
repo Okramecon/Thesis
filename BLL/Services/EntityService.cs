@@ -15,7 +15,7 @@ namespace BLL.Services.Bases
          where TKey : IEquatable<TKey>
     {
         protected DbSet<TEntity> Entities { get; set; }
-        protected AppDbContext Context { get; set; }
+        public AppDbContext Context { get; set; }
 
         protected EntityService(AppDbContext context, DbSet<TEntity> entities)
         {
@@ -23,7 +23,7 @@ namespace BLL.Services.Bases
             Context = context;
         }
 
-        public virtual async Task<TEntity> Add<T>(T model)
+        public virtual async Task<TKey> Add<T>(T model)
         {
             var entity = model.Adapt<TEntity>();
             await BeforeAdd(entity);
@@ -31,7 +31,7 @@ namespace BLL.Services.Bases
             await Entities.AddAsync(entity);
             await Context.SaveChangesAsync();
 
-            return entity;
+            return entity.Id;
         }
 
         protected virtual Task BeforeAdd(TEntity entity)

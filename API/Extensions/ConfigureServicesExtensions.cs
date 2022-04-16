@@ -27,7 +27,6 @@ namespace API.Extensions
             services.AddScoped<DepartmentService>();
             services.AddScoped<ProjectService>();
             services.AddScoped<BoardService>();
-            services.AddScoped<UserStoryService>();
             services.AddScoped<TicketService>();
             services.AddScoped<UserService>();
             services.AddScoped<AuthService>();

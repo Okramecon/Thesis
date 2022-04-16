@@ -39,7 +39,7 @@ namespace API.Controllers
         {
             var userId = CurrentUserService.GetCurrentUserId();
             model.UserId = userId;
-            return (await _commentService.Add(model)).Id;
+            return await _commentService.Add(model);
         }
 
         [HttpPut]

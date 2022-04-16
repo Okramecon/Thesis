@@ -43,7 +43,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin)]
         public async Task<int> Post(AddDepartmentModel model)
         {
-            return (await DepartmentService.Add(model)).Id;
+            return await DepartmentService.Add(model);
         }
 
         [HttpPut]

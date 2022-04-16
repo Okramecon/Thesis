@@ -178,6 +178,9 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BoardId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDatetime")
                         .HasColumnType("datetime2");
 
@@ -190,12 +193,9 @@ namespace DAL.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserStoryid")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserStoryid");
+                    b.HasIndex("BoardId");
 
                     b.ToTable("Tickets");
                 });
@@ -284,32 +284,6 @@ namespace DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("DAL.Entities.UserStory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BoardId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Details")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardId");
-
-                    b.ToTable("UserStories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -455,11 +429,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Ticket", b =>
                 {
-                    b.HasOne("DAL.Entities.UserStory", null)
+                    b.HasOne("DAL.Entities.Board", "Board")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserStoryid")
+                        .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
+
+                    b.Navigation("Board");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserRole", b =>
@@ -479,15 +455,6 @@ namespace DAL.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DAL.Entities.UserStory", b =>
-                {
-                    b.HasOne("DAL.Entities.Board", null)
-                        .WithMany("UserStories")
-                        .HasForeignKey("BoardId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -528,7 +495,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Board", b =>
                 {
-                    b.Navigation("UserStories");
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("DAL.Entities.Department", b =>
@@ -556,11 +523,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.User", b =>
                 {
                     b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("DAL.Entities.UserStory", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

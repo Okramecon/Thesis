@@ -1,7 +1,6 @@
 ﻿using Common.Interfaces;
 using System;
 using System.Collections.Generic;
-using static Model.Models.UserStoryModels;
 
 namespace Model.Models
 {
@@ -17,7 +16,7 @@ namespace Model.Models
 
         public class GetDetailBoardModel : GetBoardModel
         {
-            public ICollection<GetDetailUserStoryModel> UserStories { get; set; }
+            public ICollection<TicketModels.GetTicketModel> Tickets { get; set; }
         }
 
         public class AddBoardModel

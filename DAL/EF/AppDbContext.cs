@@ -15,7 +15,6 @@ namespace DAL.EF
         public DbSet<Department> Departments { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Board> Boards { get; set; }
-        public DbSet<UserStory> UserStories { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
