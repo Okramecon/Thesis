@@ -15,7 +15,7 @@ namespace BLL.Services.Bases
          where TKey : IEquatable<TKey>
     {
         protected DbSet<TEntity> Entities { get; set; }
-        public AppDbContext Context { get; set; }
+        protected AppDbContext Context { get; set; }
 
         protected EntityService(AppDbContext context, DbSet<TEntity> entities)
         {

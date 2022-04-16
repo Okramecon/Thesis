@@ -2,6 +2,7 @@
 using BLL.Services;
 using Common.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Model.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Model.Models.BoardModels;
@@ -48,6 +49,12 @@ namespace API.Controllers
         public async Task Delete(int id)
         {
             await _boardService.Delete(id);
+        }
+
+        [HttpGet("byProjectId")]
+        public async Task<BoardModels.GetBoardModel> GetByProjectId(int projectId)
+        {
+            return await _boardService.GetByProjectId<BoardModels.GetBoardModel>(projectId);
         }
     }
 }
