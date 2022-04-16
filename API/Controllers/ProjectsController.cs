@@ -39,7 +39,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task<int> Post(AddProjectModel model)
         {
-            return (await _projectService.Add(model)).Id;
+            return await _projectService.Add(model);
         }
 
         [HttpPut]

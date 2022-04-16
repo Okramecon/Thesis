@@ -3,6 +3,7 @@ using DAL.EF;
 using DAL.Entities;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +33,23 @@ namespace BLL.Services
         {
             var project = await ById<GetDetailProjectModel>(id);
             return project.Boards
-                .SelectMany(x => x.UserStories)
                 .SelectMany(x => x.Tickets);
+        }
+
+        public override async Task<int> Add<T>(T model)
+        {
+            var entity = model.Adapt<Project>();
+            entity.Boards = new List<Board>
+            {
+                new Board
+                {
+                    Title = string.Empty,
+                    CreatedDateTime = DateTime.UtcNow
+                }
+            };
+            Entities.Add(entity);
+            await Context.SaveChangesAsync();
+            return entity.Id;
         }
     }
 }

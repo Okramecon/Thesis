@@ -2,7 +2,9 @@
 using BLL.Services;
 using Common.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static Model.Models.CommentModels;
 using static Model.Models.TicketModels;
@@ -42,7 +44,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<int> Post(AddTicketModel model)
         {
-            return (await _ticketService.Add(model)).Id;
+            return await _ticketService.Add(model);
         }
 
         [HttpPut]
@@ -56,6 +58,14 @@ namespace API.Controllers
         public async Task Delete(int id)
         {
             await _ticketService.Delete(id);
+        }
+
+        [HttpDelete("alll")]
+        public async Task DeleteAll()
+        {
+            _ticketService.Context.Comments.RemoveRange(await _ticketService.Context.Comments.ToListAsync());
+            _ticketService.Context.Tickets.RemoveRange(await _ticketService.Context.Tickets.ToListAsync());
+            await _ticketService.Context.SaveChangesAsync();
         }
     }
 }

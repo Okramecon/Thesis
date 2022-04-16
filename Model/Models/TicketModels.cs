@@ -14,7 +14,7 @@ namespace Model.Models
             public string Details { get; set; }
             public TicketStatusType Status { get; set; }
             public DateTime CreatedDatetime { get; set; }
-            public int UserStoryid { get; set; }
+            public int BoardId { get; set; }
         }
 
         public class AddTicketModel
@@ -22,7 +22,7 @@ namespace Model.Models
             public string Title { get; set; }
             public string Details { get; set; }
             public TicketStatusType Status { get; set; }
-            public int UserStoryid { get; set; }
+            public int BoardId { get; set; }
         }
 
         public class EditTicketModel : IIdHas<int>

@@ -12,7 +12,8 @@ namespace DAL.Entities
         public string Details { get; set; }
         public TicketStatusType Status { get; set; }
         public DateTime CreatedDatetime { get; set; }
-        public int UserStoryid { get; set; }
+        public int BoardId { get; set; }
+        public Board Board { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
     }
 }
