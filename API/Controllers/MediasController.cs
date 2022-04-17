@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("list")]
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
-        public async Task<List<MediaModels.ListOut>> GetList(List<Guid> ids)
+        public async Task<List<MediaModels.ListOut>> GetList([FromQuery] List<Guid> ids)
         {
             string uploads = Path.Combine(WebHostEnvironment.WebRootPath, "uploads");
             return await MediaService.GetList(ids, uploads);

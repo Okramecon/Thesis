@@ -10,7 +10,6 @@ using Model.Models;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace BLL.Services
 {
