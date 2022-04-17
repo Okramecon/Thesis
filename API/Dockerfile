@@ -24,5 +24,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-RUN ["/app/wwwroot/uploads"]
+RUN ["/app/wwwroot/uploads", "-p"]
 ENTRYPOINT ["dotnet", "API.dll"]
