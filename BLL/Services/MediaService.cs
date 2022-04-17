@@ -70,15 +70,8 @@ namespace BLL.Services
 
             foreach(var media in medias)
             {
-                var fileName = media.Id.ToString() + media.Extension;
-
-                using var stream = new MemoryStream(File.ReadAllBytes(Path.Combine(path, fileName)).ToArray());
-
-                media.File = new FormFile(stream, 0, stream.Length, "streamFile", fileName)
-                {
-                    Headers = new HeaderDictionary(),
-                    ContentType = media.Extension.GetMimeType()
-                };
+                media.FileName = media.Id.ToString() + media.Extension;
+                media.ContentType = media.Extension.GetMimeType();
             }
 
             return medias;
