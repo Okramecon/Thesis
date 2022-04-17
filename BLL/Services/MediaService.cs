@@ -78,7 +78,7 @@ namespace BLL.Services
                 {
                     Headers = new HeaderDictionary(),
                     ContentType = media.Extension.GetMimeType()
-                }
+                };
             }
 
             return medias;
