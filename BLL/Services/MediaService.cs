@@ -10,6 +10,7 @@ using Model.Models;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Common.Extensions;
 
 namespace BLL.Services
 {
@@ -73,7 +74,11 @@ namespace BLL.Services
 
                 using var stream = new MemoryStream(File.ReadAllBytes(Path.Combine(path, fileName)).ToArray());
 
-                media.File = new FormFile(stream, 0, stream.Length, "streamFile", fileName);
+                media.File = new FormFile(stream, 0, stream.Length, "streamFile", fileName)
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = media.Extension.GetMimeType()
+                }
             }
 
             return medias;
