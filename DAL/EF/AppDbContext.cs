@@ -18,6 +18,7 @@ namespace DAL.EF
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Media> Medias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

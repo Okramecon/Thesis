@@ -33,5 +33,11 @@
     <Folder Include="Services\" />
     <Folder Include="Middleware\" />
     <Folder Include="Infrastructure\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\" />
+    <Content Remove="wwwroot\uploads\" />
   </ItemGroup>
 </Project>

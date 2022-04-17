@@ -35,6 +35,7 @@ namespace API.Extensions
             services.AddScoped<NewsService>();
             services.AddScoped<CurrentUserService>();
             services.AddScoped<CommentService>();
+            services.AddScoped<MediaService>();
         }
 
         public static void AddCors(this IServiceCollection services, IConfiguration configuration)
