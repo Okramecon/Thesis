@@ -30,7 +30,8 @@ namespace BLL.Services
             ".jpeg",
             ".docx",
             ".doc",
-            ".docm"
+            ".docm",
+            ".pdf"
         };
 
         public async Task<Guid> Add(IFormFile file, string path)
