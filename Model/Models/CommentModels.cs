@@ -1,5 +1,6 @@
 ﻿using Common.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace Model.Models
 {
@@ -14,6 +15,8 @@ namespace Model.Models
             public DateTime SendTime { get; set; }
 
             public UserModels.ByIdOut User { get; set; }
+
+            public List<MediaModels.ListOut> Attachments { get; set; }
         }
 
         public class AddCommentModel
@@ -21,9 +24,8 @@ namespace Model.Models
             public string UserId { get; set; }
             public int TicketId { get; set; }
             public string Message { get; set; }
+
+            public List<MediaModels.AddIn> Attachments { get; set; }
         }
-
-
-
     }
 }
