@@ -15,5 +15,10 @@ namespace Model.Models
 
             public string FileName { get; set; }
         }
+
+        public class AddIn
+        {
+            public Guid Id { get; set; }
+        }
     }
 }

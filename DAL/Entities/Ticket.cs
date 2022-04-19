@@ -15,5 +15,7 @@ namespace DAL.Entities
         public int BoardId { get; set; }
         public Board Board { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
+
+        public List<Media> Attachments { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Common.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace DAL.Entities
 {
@@ -12,5 +13,7 @@ namespace DAL.Entities
         public DateTime SendTime { get; set; }
 
         public User User { get; set; }
+
+        public List<Media> Attachments { get; set; }
     }
 }
