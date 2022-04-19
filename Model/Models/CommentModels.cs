@@ -25,7 +25,7 @@ namespace Model.Models
             public int TicketId { get; set; }
             public string Message { get; set; }
 
-            public List<MediaModels.AddIn> Attachments { get; set; }
+            public List<Guid> Attachments { get; set; }
         }
     }
 }

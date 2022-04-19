@@ -27,7 +27,7 @@ namespace Model.Models
             public TicketStatusType Status { get; set; }
             public int BoardId { get; set; }
 
-            public List<MediaModels.AddIn> Attachments { get; set; }
+            public List<Guid> Attachments { get; set; }
         }
 
         public class EditTicketModel : IIdHas<int>

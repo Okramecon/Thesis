@@ -5,6 +5,7 @@ using DAL.Entities;
 using DAL.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Model.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,12 @@ namespace BLL.Services
 {
     public class CommentService : EntityService<Comment, int>
     {
-        public CommentService(AppDbContext context) : base(context, context.Comments) { }
+        private MediaService MediaService { get; }
+
+        public CommentService(AppDbContext context, MediaService mediaService) : base(context, context.Comments)
+        {
+            MediaService = mediaService;
+        }
 
         protected override async Task BeforeAdd(Comment entity)
         {
@@ -43,6 +49,28 @@ namespace BLL.Services
 
             Entities.Remove(entity);
             await Context.SaveChangesAsync();
+        }
+
+        public async Task<int> Add(AddCommentModel model)
+        {
+            var entity = model.Adapt<Comment>();
+            entity.Attachments = null;
+            await BeforeAdd(entity);
+            Context.Comments.Add(entity);
+            await Context.SaveChangesAsync();
+
+            entity.Attachments = Context.Medias.Where(x => model.Attachments.Contains(x.Id)).ToList();
+            await Context.SaveChangesAsync();
+
+            return entity.Id;
+        }
+
+        public async Task<GetCommentModel> GetById(int id)
+        {
+            var result = await base.ById<GetCommentModel>(id);
+            result.Attachments = await MediaService.GetList(result.Attachments.Select(x => x.Id).ToList());
+
+            return result;
         }
     }
 }

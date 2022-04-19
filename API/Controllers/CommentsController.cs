@@ -21,16 +21,10 @@ namespace API.Controllers
             CurrentUserService = currentUserService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<GetCommentModel>> List()
-        {
-            return await _commentService.List<GetCommentModel>();
-        }
-
         [HttpGet("{id}")]
         public async Task<GetCommentModel> Get(int id)
         {
-            return await _commentService.ById<GetCommentModel>(id);
+            return await _commentService.GetById(id);
         }
 
         [HttpPost]
