@@ -48,10 +48,5 @@ namespace BLL.Services
 
             return result;
         }
-
-        public async Task<> List()
-        {
-
-        }
     }
 }
