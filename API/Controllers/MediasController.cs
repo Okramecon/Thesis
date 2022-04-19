@@ -40,5 +40,11 @@ namespace API.Controllers
         {
             return await MediaService.GetList(ids);
         }
+
+        [HttpDelete]
+        public async Task DeleteAll()
+        {
+            await MediaService.DeleteAll();
+        }
     }
 }

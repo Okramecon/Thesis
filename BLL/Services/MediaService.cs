@@ -27,7 +27,10 @@ namespace BLL.Services
         {
             ".png",
             ".jpg",
-            ".jpeg"
+            ".jpeg",
+            ".docx",
+            ".doc",
+            ".docm"
         };
 
         public async Task<Guid> Add(IFormFile file, string path)
@@ -75,6 +78,12 @@ namespace BLL.Services
             }
 
             return medias;
+        }
+
+        public async Task DeleteAll()
+        {
+            AppDbContext.Medias.RemoveRange(AppDbContext.Medias.ToList());
+            await AppDbContext.SaveChangesAsync();
         }
     }
 }
