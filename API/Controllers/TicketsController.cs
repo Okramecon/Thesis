@@ -20,16 +20,10 @@ namespace API.Controllers
             _commentService = commentService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<GetTicketModel>> List()
-        {
-            return await _ticketService.List<GetTicketModel>();
-        }
-
         [HttpGet("{id}")]
         public async Task<GetTicketModel> Get(int id)
         {
-            return await _ticketService.ById<GetTicketModel>(id);
+            return await _ticketService.GetById(id);
         }
 
         [HttpGet("{id}/comments")]

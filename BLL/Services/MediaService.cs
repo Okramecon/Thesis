@@ -61,7 +61,7 @@ namespace BLL.Services
             throw new InnerException("Provided file is empty!", "d435cb1a-f7b3-420c-b746-3e1a8ae7195a");
         }
 
-        public async Task<List<MediaModels.ListOut>> GetList(List<Guid> ids, string path)
+        public async Task<List<MediaModels.ListOut>> GetList(List<Guid> ids)
         {
             var medias = await AppDbContext.Medias
                 .Where(x => ids.Contains(x.Id))

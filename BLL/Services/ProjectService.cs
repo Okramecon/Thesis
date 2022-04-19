@@ -14,7 +14,12 @@ namespace BLL.Services
 {
     public class ProjectService : EntityService<Project, int>
     {
-        public ProjectService(AppDbContext context) : base(context, context.Projects) { }
+        private MediaService MediaService { get; }
+
+        public ProjectService(AppDbContext context, MediaService mediaService) : base(context, context.Projects)
+        {
+            MediaService = mediaService;
+        }
 
         /// <summary>
         /// Get department-owned projects
@@ -32,8 +37,15 @@ namespace BLL.Services
         public async Task<IEnumerable<GetTicketModel>> GetTicketsByProjectIdAsync(int id)
         {
             var project = await ById<GetDetailProjectModel>(id);
-            return project.Boards
+            var tickets = project.Boards
                 .SelectMany(x => x.Tickets);
+            foreach(var ticket in tickets)
+            {
+                var mediaIds = ticket.Attachments.Select(x => x.Id).ToList();
+                ticket.Attachments = await MediaService.GetList(mediaIds);
+            }
+
+            return tickets;
         }
 
         public override async Task<int> Add<T>(T model)
