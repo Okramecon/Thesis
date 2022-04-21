@@ -75,7 +75,12 @@ namespace BLL.Services
             var user = await Context.Users
                     .Include(x => x.Departments)
                     .ById(userId);
-            var department = await user.Departments.AsQueryable().ById(departmentId);
+            var department = user.Departments.FirstOrDefault(x => x.Id == departmentId);
+
+            if(department.IsNull())
+            {
+                throw new InnerException($"No such department with id={departmentId}", "2e1cd1a5-43c8-4665-9a0b-fb6c2ff1aaaf");
+            }
 
             return department.Adapt<T>();
         }
