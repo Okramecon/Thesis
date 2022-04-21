@@ -36,7 +36,6 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Role")]
-        [AuthorizeRoles(RoleType.Admin)]
         public async Task AddRole(string roleName)
         {
             await RoleManager.CreateAsync(new Role()
@@ -54,13 +53,12 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("AddToRoles")]
-        [AuthorizeRoles(RoleType.Admin)]
         public async Task AddToRoles(string userId, List<string> roles)
         {
             var user = await UserManager.FindByIdAsync(userId);
-            if (roles.Contains(RoleType.User.Description()))
+            if (roles.Contains(RoleType.User.ToString()))
             {
-                roles.Remove(RoleType.User.Description());
+                roles.Remove(RoleType.User.ToString());
             }
 
             await UserManager.AddToRolesAsync(
@@ -74,9 +72,9 @@ namespace API.Controllers
         public async Task RemoveFromRoles(string userId, List<string> roles)
         {
             var user = await UserManager.FindByIdAsync(userId);
-            if(roles.Contains(RoleType.User.Description()))
+            if(roles.Contains(RoleType.User.ToString()))
             {
-                roles.Remove(RoleType.User.Description());
+                roles.Remove(RoleType.User.ToString());
             }
 
             await UserManager.RemoveFromRolesAsync(
