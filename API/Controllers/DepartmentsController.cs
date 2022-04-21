@@ -2,6 +2,7 @@
 using BLL.Services;
 using Common.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Model.Models.DepartmentModels;
@@ -13,30 +14,37 @@ namespace API.Controllers
     {
         private DepartmentService DepartmentService { get; }
         private ProjectService ProjectService { get; }
+        private CurrentUserService CurrentUserService { get; }
 
-        public DepartmentsController(DepartmentService departmentService, ProjectService projectService)
+        public DepartmentsController(DepartmentService departmentService, ProjectService projectService, CurrentUserService currentUserService)
         {
             DepartmentService = departmentService;
             ProjectService = projectService;
+            CurrentUserService = currentUserService;
         }
 
         [HttpGet]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<IEnumerable<GetDepartmentModel>> List()
         {
-            return await DepartmentService.List<GetDepartmentModel>();
+            var (userId, roles) = (CurrentUserService.GetCurrentUserId(), await CurrentUserService.GetRoles());
+            return await DepartmentService.ListByUser<GetDepartmentModel>(userId, roles);
         }
 
         [HttpGet]
         [Route("{id}/projects")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<IEnumerable<GetProjectModel>> ProjectsByDepartment(int id)
         {
             return await ProjectService.GetProjectsByDepartmentId(id);
         }
 
         [HttpGet("{id}")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<GetDepartmentModel> Get(int id)
         {
-            return await DepartmentService.ById<GetDepartmentModel>(id);
+            var (userId, roles) = (CurrentUserService.GetCurrentUserId(), await CurrentUserService.GetRoles());
+            return await DepartmentService.ById<GetDepartmentModel>(id, userId, roles);
         }
 
         [HttpPost]
@@ -58,6 +66,13 @@ namespace API.Controllers
         public async Task Delete(int id)
         {
             await DepartmentService.Delete(id);
+        }
+
+        [HttpGet("addUser/{id}")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
+        public async Task AddUserToDepartment(string userId, int id)
+        {
+            await DepartmentService.AddUserToDepartment(userId, id);
         }
     }
 }

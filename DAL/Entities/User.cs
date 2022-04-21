@@ -13,5 +13,7 @@ namespace DAL.Entities
         //public string ProfilePictureId { get; set; }
 
         public virtual ICollection<UserRole> Roles { get; set; }
+
+        public ICollection<Department> Departments { get; set; }
     }
 }
