@@ -37,6 +37,18 @@ namespace BLL.Services
             await Context.SaveChangesAsync();
         }
 
+        public async Task AddUserToDepartmentByEmail(string userName, int departmentId)
+        {
+            var entity = await Entities
+                .Include(x => x.Users)
+                .ById(departmentId);
+
+            var user = await UserManager.FindByEmailAsync(userName);
+            entity.Users.Add(user);
+
+            await Context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<T>> ListByUser<T>(string userId, ICollection<RoleType> roles)
         {
             if(roles.Contains(RoleType.Admin))

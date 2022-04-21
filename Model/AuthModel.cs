@@ -64,6 +64,8 @@ namespace Model
             /// Роли пользователя
             /// </summary>
             public string Roles { get; set; }
+
+            public string UserId { get; set; }
         }
     }
 }

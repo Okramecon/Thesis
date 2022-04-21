@@ -74,5 +74,12 @@ namespace API.Controllers
         {
             await DepartmentService.AddUserToDepartment(userId, id);
         }
+
+        [HttpGet("addUserByEmail/{id}")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
+        public async Task AddUserToDepartmentByEmail(string userName, int id)
+        {
+            await DepartmentService.AddUserToDepartmentByEmail(userName, id);
+        }
     }
 }
