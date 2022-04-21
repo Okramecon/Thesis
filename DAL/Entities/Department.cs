@@ -14,5 +14,7 @@ namespace DAL.Entities
         public ICollection<Project> Projects { get; set; }
 
         public ICollection<News> News { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }
