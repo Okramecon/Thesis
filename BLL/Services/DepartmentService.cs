@@ -37,9 +37,9 @@ namespace BLL.Services
             await Context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> ListByUser<T>(string userId, ICollection<RoleType> roles)
+        public async Task<IEnumerable<T>> ListByUser<T>(string userId, ICollection<string> roles)
         {
-            if(roles.Contains(RoleType.Admin))
+            if(roles.Contains(RoleType.Admin.Description()))
             {
                 return await Entities
                     .ProjectToType<T>()
@@ -53,9 +53,9 @@ namespace BLL.Services
             return user.Departments.Adapt<IEnumerable<T>>();
         }
 
-        public async Task<T> ById<T> (int departmentId, string userId, ICollection<RoleType> roles) where T: class, IIdHas<int>
+        public async Task<T> ById<T> (int departmentId, string userId, ICollection<string> roles) where T: class, IIdHas<int>
         {
-            if(roles.Contains(RoleType.Admin))
+            if(roles.Contains(RoleType.Admin.Description()))
             {
                 return await base.ById<T>(departmentId);
             }

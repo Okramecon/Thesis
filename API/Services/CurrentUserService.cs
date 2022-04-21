@@ -35,7 +35,7 @@ namespace API.Infrastructure
             return userId;
         }
 
-        public async Task<ICollection<RoleType>> GetRoles()
+        public async Task<ICollection<string>> GetRoles()
         {
             var userId = GetCurrentUserId();
             var roles = await UserManager.GetRolesAsync(new User
@@ -43,7 +43,7 @@ namespace API.Infrastructure
                 Id = userId
             });
 
-            return roles.Select(x => Enum.Parse<RoleType>(x)).ToList();
+            return roles;
         }
     }
 }
