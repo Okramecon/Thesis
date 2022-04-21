@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DAL.EF;
 using DAL.Entities;
+using DAL.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Model.Models;
@@ -41,12 +42,10 @@ namespace BLL.Services
             var entity = model.Adapt<News>();
 
             entity.CreatedDateTime = DateTime.UtcNow;
-            entity.Author = new User
-            {
-                Id = id
-            };
+
+            entity.Author = await Users.ById(id);
             News.Add(entity);
-            
+           
             await AppDbContext.SaveChangesAsync();
             return entity.Id;
         }
