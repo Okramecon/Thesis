@@ -1,8 +1,10 @@
 ﻿using BLL.Services.Bases;
+using Common.Extensions;
 using DAL.EF;
 using DAL.Entities;
 using Mapster;
 using Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,12 +32,15 @@ namespace BLL.Services
         public async Task<int> Add(TicketModels.AddTicketModel model)
         {
             var entity = model.Adapt<Ticket>();
-            entity.Attachments = null;
+            entity.Attachments = new ();
             await BeforeAdd(entity);
             Context.Tickets.Add(entity);
             await Context.SaveChangesAsync();
-            
-            entity.Attachments = Context.Medias.Where(x => model.Attachments.Contains(x.Id)).ToList();
+
+            if (model.Attachments.IsNotNull())
+            {
+                entity.Attachments = Context.Medias.Where(x => model.Attachments.Contains(x.Id)).ToList();
+            }
             await Context.SaveChangesAsync();
 
             return entity.Id;
