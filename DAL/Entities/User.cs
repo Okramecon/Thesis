@@ -11,6 +11,7 @@ namespace DAL.Entities
         public string LastName { get; set; }
 
         //public string ProfilePictureId { get; set; }
+        public virtual IEnumerable<ChatRoomUser> ChatRooms { get; set; }
 
         public virtual ICollection<UserRole> Roles { get; set; }
     }

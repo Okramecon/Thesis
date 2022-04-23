@@ -18,6 +18,9 @@ namespace DAL.EF
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<ChatRoomUser> ChatRoomUsers{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,6 +36,18 @@ namespace DAL.EF
                 .HasOne(x => x.Role)
                 .WithMany(x => x.Users)
                 .HasForeignKey(x => x.RoleId)
+                .IsRequired();
+
+            builder.Entity<ChatRoomUser>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.ChatRooms)
+                .HasForeignKey(x => x.UserId)
+                .IsRequired();
+
+            builder.Entity<ChatRoomUser>()
+                .HasOne(x => x.ChatRoom)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.ChatRoomId)
                 .IsRequired();
 
             foreach (var x in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

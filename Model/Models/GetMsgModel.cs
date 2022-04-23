@@ -1,9 +1,12 @@
-﻿using Common.Interfaces;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace Model.Models
 {
-    public class ChatMessage : IIdHas<int>
+    public class GetMsgModel
     {
         public int Id { get; set; }
         public int? ChatRoomId { get; set; }

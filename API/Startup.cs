@@ -1,9 +1,10 @@
 using API.Extensions;
+using API.Hubs;
 using API.Middleware;
-using Chat;
 using DAL.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,7 @@ namespace Thesis
             services.AddServices();
             services.RegisterJwtAuthorization(Configuration);
             services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), o => o.CommandTimeout(90)));
+            services.AddSingleton<IUserIdProvider, UserIdProvider>();
             services.RegisterSwagger();
             services.AddCors(Configuration);
             services.AddSignalR();

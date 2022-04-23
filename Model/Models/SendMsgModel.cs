@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Chat.Models
+namespace Model.Models
 {
     public class SendMsgModel
     {
+        public int ChatRoomId { get; set; }
         public string Message { get; set; }
         public string FromId { get; set; }
         public string ToId { get; set; }
