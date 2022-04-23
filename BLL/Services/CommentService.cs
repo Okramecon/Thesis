@@ -1,5 +1,6 @@
 ﻿using BLL.Services.Bases;
 using Common.Exceptions;
+using Common.Extensions;
 using DAL.EF;
 using DAL.Entities;
 using DAL.Extensions;
@@ -54,12 +55,16 @@ namespace BLL.Services
         public async Task<int> Add(AddCommentModel model)
         {
             var entity = model.Adapt<Comment>();
-            entity.Attachments = null;
+            entity.Attachments = new ();
             await BeforeAdd(entity);
             Context.Comments.Add(entity);
             await Context.SaveChangesAsync();
 
-            entity.Attachments = Context.Medias.Where(x => model.Attachments.Contains(x.Id)).ToList();
+            if(model.Attachments.IsNotNull())
+            {
+                entity.Attachments = Context.Medias.Where(x => model.Attachments.Contains(x.Id)).ToList();
+            }
+            
             await Context.SaveChangesAsync();
 
             return entity.Id;
