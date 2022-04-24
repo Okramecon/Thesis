@@ -25,17 +25,23 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<GetChatRoomModel> ById(int chatId)
+        public async Task<GetChatRoomMessagesModel> ById(int chatId)
         {
             return await chatRoomService.ById(chatId);
         }
 
         [HttpGet]
         [Route("user")]
-        public async Task<IEnumerable<GetChatRoomModel>> GetUserChats(string username)
+        public async Task<IEnumerable<GetChatRoomModel>> GetUserChatRooms(string username)
         {
-            var test =  await chatRoomService.GetUserChats(username);
-            return test;
+            return await chatRoomService.GetUserChatRooms(username);
+        }
+
+        [HttpGet]
+        [Route("common")]
+        public async Task<GetChatRoomMessagesModel> GetCommonChatRoom(string userId1, string userId2)
+        {
+            return await chatRoomService.CommonChatRoom(userId1, userId2);
         }
     }
 }

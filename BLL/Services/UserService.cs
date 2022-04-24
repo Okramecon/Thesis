@@ -110,16 +110,16 @@ namespace BLL.Services
             return user.Adapt<T>();
         }
 
-        public async Task<IEnumerable<T>> MatchingList<T>(string serachStr)
+        public async Task<IEnumerable<T>> MatchingList<T>(string serachStr, string currentUser)
         {
-            var t = AppDbContext.Users
-                .Where(u => 
-                    u.FirstName.Contains(serachStr)||
+            return await AppDbContext.Users
+                .Where(u =>
+                    (u.FirstName.Contains(serachStr) ||
                     u.LastName.Contains(serachStr) ||
-                    u.UserName.Contains(serachStr))
+                    u.UserName.Contains(serachStr)) &&
+                    u.UserName != currentUser)
                 .ProjectToType<T>()
-                .ToList();
-            return t;
+                .ToListAsync();
         }
     }
 }

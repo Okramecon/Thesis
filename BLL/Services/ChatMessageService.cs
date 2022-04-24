@@ -16,7 +16,7 @@ namespace BLL.Services
 
         private DbSet<ChatMessage> ChatMessages { get; set; }
 
-        public ChatMessageService(AppDbContext context, ChatRoomService chatRoomService, UserManager<User> userManager)
+        public ChatMessageService(AppDbContext context, ChatRoomService chatRoomService, UserManager<User> userManager, UserService userService)
         {
             appDbContext = context;
             this.chatRoomService = chatRoomService;
@@ -26,7 +26,8 @@ namespace BLL.Services
 
         public async Task<int> Add(ChatMessage message)
         {
-            if (message.ChatRoomId == null)
+            var commonRoom = await chatRoomService.CommonChatRoomByUsername(message.FromId, message.ToId);
+            if (commonRoom == null)
             {
                 var roomId = await chatRoomService.Add(new AddRoomModel());
                 message.ChatRoomId = roomId;
@@ -44,6 +45,7 @@ namespace BLL.Services
                     ChatRoomId = roomId
                 });
             }
+            else message.ChatRoomId = commonRoom.Id;
 
             message.SendDateTime = DateTime.Now;
             await ChatMessages.AddAsync(message);

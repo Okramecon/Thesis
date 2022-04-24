@@ -21,6 +21,14 @@ namespace Model.Models
             public int Id { get; set; }
             public string Name { get; set; } // Use for group chats (todo mb feature)
             public IEnumerable<ChatRoomUserModels.OnlyUserModel> Users { get; set; }
+            //public IEnumerable<GetMsgModel> ChatMessages { get; set; }
+        }
+
+        public class GetChatRoomMessagesModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } // Use for group chats (todo mb feature)
+            public IEnumerable<ChatRoomUserModels.OnlyUserModel> Users { get; set; }
             public IEnumerable<GetMsgModel> ChatMessages { get; set; }
         }
     }

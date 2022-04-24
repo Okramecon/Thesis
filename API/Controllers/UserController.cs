@@ -5,6 +5,7 @@ using Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Model.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -65,7 +66,8 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.User)]
         public async Task<IEnumerable<UserModels.ListOut>> SearchUsers(string searchStr)
         {
-            return await Service.MatchingList<UserModels.ListOut>(searchStr);
+            var currentUser = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            return await Service.MatchingList<UserModels.ListOut>(searchStr, currentUser);
         }
     }
 }

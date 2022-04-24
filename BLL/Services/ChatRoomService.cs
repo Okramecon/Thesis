@@ -33,19 +33,41 @@ namespace BLL.Services
             return room.Id;
         }
 
-        public async Task<GetChatRoomModel> ById(int id)
+        public async Task<GetChatRoomMessagesModel> ById(int id)
         {
             return (await ChatRooms
                 .Include(cr => cr.ChatMessages)
                 .Include(cr => cr.Users)
                 .ThenInclude(u => u.User)
                 .FirstOrDefaultAsync(cr => cr.Id == id))
-                .Adapt<GetChatRoomModel>();
+                .Adapt<GetChatRoomMessagesModel>();
+        }
+        
+        public async Task<GetChatRoomMessagesModel> CommonChatRoom(string userId1, string userId2)
+        {
+            return (await ChatRooms
+                .Include(cr => cr.ChatMessages)
+                .Include(cr => cr.Users)
+                .ThenInclude(cr => cr.User)
+                .FirstOrDefaultAsync(cr =>
+                    cr.Users.Any(u => u.UserId == userId1) &&
+                    cr.Users.Any(u => u.UserId == userId2)))
+                .Adapt<GetChatRoomMessagesModel>();
+        }
+        
+        public async Task<ChatRoom> CommonChatRoomByUsername(string username1, string username2)
+        {
+            return await ChatRooms
+                .Include(cr => cr.Users)
+                .ThenInclude(cr => cr.User)
+                .FirstOrDefaultAsync(cr =>
+                    cr.Users.Any(u => u.User.UserName == username1) &&
+                    cr.Users.Any(u => u.User.UserName == username2));
         }
 
-        public async Task<IEnumerable<GetChatRoomModel>> GetUserChats(string username)
+        public async Task<IEnumerable<GetChatRoomModel>> GetUserChatRooms(string username)
         {
-            var user = (await appDbContext.Users.ToListAsync()).FirstOrDefault(u => u.UserName == username);
+            var user = await appDbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
             return await appDbContext.ChatRooms
                 .Include(x => x.Users)
