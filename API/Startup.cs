@@ -41,10 +41,11 @@ namespace Thesis
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseHsts();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
-
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 

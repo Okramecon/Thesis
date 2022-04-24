@@ -4,14 +4,16 @@ using DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220421081407_DepUserLink")]
+    partial class DepUserLink
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,79 +42,6 @@ namespace DAL.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Boards");
-                });
-
-            modelBuilder.Entity("DAL.Entities.ChatMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ChatRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FromId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReplyTo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SendDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ToId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatRoomId");
-
-                    b.ToTable("ChatMessages");
-                });
-
-            modelBuilder.Entity("DAL.Entities.ChatRoom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChatRooms");
-                });
-
-            modelBuilder.Entity("DAL.Entities.ChatRoomUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatRoomId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ChatRoomUsers");
                 });
 
             modelBuilder.Entity("DAL.Entities.Comment", b =>
@@ -498,33 +427,6 @@ namespace DAL.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("DAL.Entities.ChatMessage", b =>
-                {
-                    b.HasOne("DAL.Entities.ChatRoom", null)
-                        .WithMany("ChatMessages")
-                        .HasForeignKey("ChatRoomId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
-                });
-
-            modelBuilder.Entity("DAL.Entities.ChatRoomUser", b =>
-                {
-                    b.HasOne("DAL.Entities.ChatRoom", "ChatRoom")
-                        .WithMany("Users")
-                        .HasForeignKey("ChatRoomId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.User", "User")
-                        .WithMany("ChatRooms")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("ChatRoom");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DAL.Entities.Comment", b =>
                 {
                     b.HasOne("DAL.Entities.Ticket", null)
@@ -672,13 +574,6 @@ namespace DAL.Migrations
                     b.Navigation("Attachments");
                 });
 
-            modelBuilder.Entity("DAL.Entities.ChatRoom", b =>
-                {
-                    b.Navigation("ChatMessages");
-
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("DAL.Entities.Department", b =>
                 {
                     b.Navigation("News");
@@ -705,8 +600,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.User", b =>
                 {
-                    b.Navigation("ChatRooms");
-
                     b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618

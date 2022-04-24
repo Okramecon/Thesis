@@ -9,7 +9,7 @@ namespace API.Infrastructure
     {
         public AuthorizeRolesAttribute(params RoleType[] allowedRoles)
         {
-            Roles = string.Join(",", allowedRoles.Select(x => x.Description()));
+            Roles = string.Join(",", allowedRoles.Select(x => x.ToString()));
         }
 
         public AuthorizeRolesAttribute(params string[] allowedRoles)

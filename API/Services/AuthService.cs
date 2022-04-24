@@ -49,7 +49,8 @@ namespace API.Services
                 AccessToken = accessToken,
                 AccessTokenExpireDate = expireDate,
                 Roles = string.Join(',', roleNames),
-                UserName = user.UserName
+                UserName = user.UserName,
+                UserId = user.Id
             };
         }
 

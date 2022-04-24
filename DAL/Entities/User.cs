@@ -14,5 +14,7 @@ namespace DAL.Entities
         public virtual IEnumerable<ChatRoomUser> ChatRooms { get; set; }
 
         public virtual ICollection<UserRole> Roles { get; set; }
+
+        public ICollection<Department> Departments { get; set; }
     }
 }

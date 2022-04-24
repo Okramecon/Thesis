@@ -42,6 +42,7 @@ namespace API.Extensions
             services.AddScoped<CommentService>();
             services.AddScoped<ChatMessageService>();
             services.AddScoped<ChatRoomService>();
+            services.AddScoped<MediaService>();
         }
 
         public static void AddCors(this IServiceCollection services, IConfiguration configuration)
@@ -57,7 +58,7 @@ namespace API.Extensions
         {
             var jwt = configuration.GetSection("JwtSettings").Get<AuthModel.JwtSettings>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options => options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;

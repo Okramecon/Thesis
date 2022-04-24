@@ -112,12 +112,14 @@ namespace BLL.Services
 
         public async Task<IEnumerable<T>> MatchingList<T>(string serachStr)
         {
-            return await Users.Users
+            var t = AppDbContext.Users
                 .Where(u => 
-                    $"{u.FirstName} {u.LastName}".Contains(serachStr) ||
+                    u.FirstName.Contains(serachStr)||
+                    u.LastName.Contains(serachStr) ||
                     u.UserName.Contains(serachStr))
                 .ProjectToType<T>()
-                .ToListAsync();
+                .ToList();
+            return t;
         }
     }
 }
