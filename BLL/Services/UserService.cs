@@ -5,8 +5,10 @@ using DAL.EF;
 using DAL.Entities;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Model.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -106,6 +108,18 @@ namespace BLL.Services
                 throw new InnerException($"No such user with id {id}", "844601d4-c37b-4602-abec-5eeb5e9c67db");
             }
             return user.Adapt<T>();
+        }
+
+        public async Task<IEnumerable<T>> MatchingList<T>(string serachStr, string currentUser)
+        {
+            return await AppDbContext.Users
+                .Where(u =>
+                    (u.FirstName.Contains(serachStr) ||
+                    u.LastName.Contains(serachStr) ||
+                    u.UserName.Contains(serachStr)) &&
+                    u.UserName != currentUser)
+                .ProjectToType<T>()
+                .ToListAsync();
         }
     }
 }

@@ -17,6 +17,10 @@ using Microsoft.OpenApi.Models;
 using Thesis;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API.Extensions
 {
@@ -24,6 +28,7 @@ namespace API.Extensions
     {
         public static void AddServices(this IServiceCollection services)
         {
+
             services.AddScoped<DepartmentService>();
             services.AddScoped<ProjectService>();
             services.AddScoped<BoardService>();
@@ -35,6 +40,8 @@ namespace API.Extensions
             services.AddScoped<NewsService>();
             services.AddScoped<CurrentUserService>();
             services.AddScoped<CommentService>();
+            services.AddScoped<ChatMessageService>();
+            services.AddScoped<ChatRoomService>();
             services.AddScoped<MediaService>();
         }
 
@@ -51,7 +58,7 @@ namespace API.Extensions
         {
             var jwt = configuration.GetSection("JwtSettings").Get<AuthModel.JwtSettings>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options => options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
@@ -66,6 +73,28 @@ namespace API.Extensions
                         ValidAudience = jwt.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
                         ClockSkew = TimeSpan.Zero,
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                (path.StartsWithSegments("/chat")))
+                            {
+                                var ticket = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
+                                var claims = ticket.Claims;
+                                var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
+                                context.Principal = new(identity);
+                                context.Success();
+
+                                //context.Token = accessToken;
+                                //context.HttpContext.Request.Headers.Add("Authorization", new[] { $"Bearer {accessToken}" });
+                            }
+                            return Task.CompletedTask;
+                        }
                     };
                 });
         }

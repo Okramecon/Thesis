@@ -4,6 +4,8 @@ using Common.Enums;
 using Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Model.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -54,6 +56,18 @@ namespace API.Controllers
             }
 
             await Service.Edit(id, model);
+        }
+
+        /// <summary>
+        /// Search matching by substring users
+        /// </summary>
+        [HttpGet]
+        [Route("search")] 
+        [AuthorizeRoles(RoleType.User)]
+        public async Task<IEnumerable<UserModels.ListOut>> SearchUsers(string searchStr)
+        {
+            var currentUser = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            return await Service.MatchingList<UserModels.ListOut>(searchStr, currentUser);
         }
     }
 }

@@ -23,9 +23,10 @@ namespace BLL.Services
             MediaService = mediaService;
         }
 
-        protected override async Task BeforeAdd(Comment entity)
+        protected override Task BeforeAdd(Comment entity)
         {
             entity.SendTime = System.DateTime.UtcNow;
+            return Task.CompletedTask;
         }
 
         public async Task<IEnumerable<GetCommentModel>> GetTicketCommentsAsync(int ticketId)
