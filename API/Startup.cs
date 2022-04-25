@@ -1,3 +1,4 @@
+using System;
 using API.Extensions;
 using API.Hubs;
 using API.Middleware;
@@ -35,7 +36,11 @@ namespace Thesis
             services.AddSingleton<IUserIdProvider, UserIdProvider>();
             services.RegisterSwagger();
             services.AddCors(Configuration);
-            services.AddSignalR();
+            services.AddSignalR(options =>
+            {
+                options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+                options.EnableDetailedErrors = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,6 +50,7 @@ namespace Thesis
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
+            app.UseWebSockets();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
