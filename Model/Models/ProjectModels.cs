@@ -10,9 +10,7 @@ namespace Model.Models
         public class GetProjectModel : IIdHas<int>
         {
             public int Id { get; set; }
-            [MaxLength(20)]
             public string Title { get; set; }
-            [MaxLength(100)]
             public string Summary { get; set; }
             public int DepartmentId { get; set; }
 
@@ -27,7 +25,6 @@ namespace Model.Models
         public class AddProjectModel
         {
             public string Title { get; set; }
-            [MaxLength(100)]
             public string Summary { get; set; }
             public int DepartmentId { get; set; }
         }
@@ -37,7 +34,6 @@ namespace Model.Models
             [Required]
             public int Id { get; set; }
             public string Title { get; set; }
-            [MaxLength(100)]
             public string Summary { get; set; }
         }
     }
