@@ -13,6 +13,7 @@ using DAL.Extensions;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Model.Models;
 
 namespace BLL.Services
 {
@@ -49,6 +50,15 @@ namespace BLL.Services
             await Context.SaveChangesAsync();
         }
 
+        public async Task<List<T>> GetUsersByDepartment<T>(int departmentId)
+        {
+            var entity = await Entities
+                .Include(x => x.Users)
+                .ById(departmentId);
+
+            return entity.Users.Adapt<List<T>>();
+        }
+
         public async Task<IEnumerable<T>> ListByUser<T>(string userId, ICollection<RoleType> roles)
         {
             if(roles.Contains(RoleType.Admin))
@@ -83,6 +93,28 @@ namespace BLL.Services
             }
 
             return department.Adapt<T>();
+        }
+
+        public async Task RemoveUserFromDepartment(int departmentId, string userIdToDelete, string userId)
+        {
+
+            var department = await Entities
+                .Include(x => x.Users)
+                .FirstOrDefaultAsync(x => x.Id == departmentId);
+
+            if(department.Users.FirstOrDefault(x => x.Id == userId) == null)
+            {
+                throw new InnerException($"Can not remove user from department with id={departmentId}", "9afd5c6c-186c-441f-980a-e463dc720cda");
+            }
+
+            if (department.IsNull())
+            {
+                throw new InnerException($"No such department with id={departmentId}", "d0b68913-a305-4139-ab0f-204e63759e28");
+            }
+
+            var userToDelete = department.Users.FirstOrDefault(x => x.Id == userIdToDelete);
+            department.Users.Remove(userToDelete);
+            await Context.SaveChangesAsync();
         }
     }
 }

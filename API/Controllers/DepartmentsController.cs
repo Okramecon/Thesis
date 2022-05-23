@@ -2,6 +2,7 @@
 using BLL.Services;
 using Common.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace API.Controllers
         public async Task<GetDepartmentModel> Get(int id)
         {
             var (userId, roles) = (CurrentUserService.GetCurrentUserId(), await CurrentUserService.GetRoles());
+            
             return await DepartmentService.ById<GetDepartmentModel>(id, userId, roles);
         }
 
@@ -80,6 +82,21 @@ namespace API.Controllers
         public async Task AddUserToDepartmentByEmail(string userName, int id)
         {
             await DepartmentService.AddUserToDepartmentByEmail(userName, id);
+        }
+
+        [HttpGet("{id}/users")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
+        public async Task<List<UserModels.ByIdOut>> GetDepartmentUsers(int id)
+        {
+            return await DepartmentService.GetUsersByDepartment<UserModels.ByIdOut>(id);
+        }
+
+        [HttpDelete("{id}/user/{userIdToDelete}")]
+        [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
+        public async Task RemoveUserFromDepartment(int id, string userIdToDelete)
+        {
+            var (userId, _) = (CurrentUserService.GetCurrentUserId(), await CurrentUserService.GetRoles());
+            await DepartmentService.RemoveUserFromDepartment(id, userIdToDelete, userId);
         }
     }
 }
