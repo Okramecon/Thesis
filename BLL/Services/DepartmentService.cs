@@ -109,7 +109,7 @@ namespace BLL.Services
                 .Include(x => x.Users)
                 .FirstOrDefaultAsync(x => x.Id == departmentId);
 
-            if(department.Users.FirstOrDefault(x => x.Id == userId) == null)
+            if(department.Users.FirstOrDefault(x => x.Id == userIdToDelete) == null)
             {
                 throw new InnerException($"Can not remove user from department with id={departmentId}", "9afd5c6c-186c-441f-980a-e463dc720cda");
             }
