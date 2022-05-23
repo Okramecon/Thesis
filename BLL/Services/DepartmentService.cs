@@ -50,13 +50,20 @@ namespace BLL.Services
             await Context.SaveChangesAsync();
         }
 
-        public async Task<List<T>> GetUsersByDepartment<T>(int departmentId)
+        public async Task<List<UserModels.ByIdOut>> GetUsersByDepartment(int departmentId)
         {
             var entity = await Entities
                 .Include(x => x.Users)
                 .ById(departmentId);
 
-            return entity.Users.Adapt<List<T>>();
+            var result = entity.Users.Adapt<List<UserModels.ByIdOut>>();
+            foreach(var item in result)
+            {
+                var user = await UserManager.FindByIdAsync(item.Id);
+                var roles = await UserManager.GetRolesAsync(user);
+                item.Roles = string.Join(',', roles);
+            }
+            return result;
         }
 
         public async Task<IEnumerable<T>> ListByUser<T>(string userId, ICollection<RoleType> roles)

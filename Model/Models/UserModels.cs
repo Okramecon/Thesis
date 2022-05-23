@@ -71,6 +71,8 @@ namespace Model.Models
             /// Фамилия
             /// </summary>
             public string LastName { get; set; }
+
+            public string Roles { get; set; }
         }
 
         public class ListOut

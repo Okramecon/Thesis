@@ -88,7 +88,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task<List<UserModels.ByIdOut>> GetDepartmentUsers(int id)
         {
-            return await DepartmentService.GetUsersByDepartment<UserModels.ByIdOut>(id);
+            return await DepartmentService.GetUsersByDepartment(id);
         }
 
         [HttpDelete("{id}/user/{userIdToDelete}")]
