@@ -53,6 +53,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("AddToRoles")]
+        [AuthorizeRoles(RoleType.Admin)]
         public async Task AddToRoles(string userId, List<string> roles)
         {
             var user = await UserManager.FindByIdAsync(userId);
