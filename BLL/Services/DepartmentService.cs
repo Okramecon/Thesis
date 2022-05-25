@@ -82,37 +82,12 @@ namespace BLL.Services
             return user.Departments.Adapt<IEnumerable<T>>();
         }
 
-        public async Task<T> ById<T> (int departmentId, string userId, ICollection<RoleType> roles) where T: class, IIdHas<int>
-        {
-            if(roles.Contains(RoleType.Admin))
-            {
-                return await base.ById<T>(departmentId);
-            }
-
-            var user = await Context.Users
-                    .Include(x => x.Departments)
-                    .ById(userId);
-            var department = user.Departments.FirstOrDefault(x => x.Id == departmentId);
-
-            if(department.IsNull())
-            {
-                throw new InnerException($"No such department with id={departmentId}", "2e1cd1a5-43c8-4665-9a0b-fb6c2ff1aaaf");
-            }
-
-            return department.Adapt<T>();
-        }
-
-        public async Task RemoveUserFromDepartment(int departmentId, string userIdToDelete, string userId)
+        public async Task RemoveUserFromDepartment(int departmentId, string userIdToDelete)
         {
 
             var department = await Entities
                 .Include(x => x.Users)
                 .FirstOrDefaultAsync(x => x.Id == departmentId);
-
-            if(department.Users.FirstOrDefault(x => x.Id == userIdToDelete) == null)
-            {
-                throw new InnerException($"Can not remove user from department with id={departmentId}", "9afd5c6c-186c-441f-980a-e463dc720cda");
-            }
 
             if (department.IsNull())
             {
@@ -121,7 +96,25 @@ namespace BLL.Services
 
             var userToDelete = department.Users.FirstOrDefault(x => x.Id == userIdToDelete);
             department.Users.Remove(userToDelete);
+
             await Context.SaveChangesAsync();
+        }
+
+        public async Task UserInDepartmentElseThrow(int departmentId, string userId)
+        {
+            var department = await Entities
+                .Include(x => x.Users)
+                .FirstOrDefaultAsync(x => x.Id == departmentId);
+
+            if (department.IsNull())
+            {
+                throw new InnerException($"No such department with id={departmentId}", "d0b68913-a305-4139-ab0f-204e63759e28");
+            }
+
+            if (department.Users.FirstOrDefault(x => x.Id == userId) == null)
+            {
+                throw new InnerException($"Can not access department user from department with id={departmentId}", "9afd5c6c-186c-441f-980a-e463dc720cda");
+            }
         }
     }
 }

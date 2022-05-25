@@ -44,9 +44,8 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin, RoleType.User)]
         public async Task<GetDepartmentModel> Get(int id)
         {
-            var (userId, roles) = (CurrentUserService.GetCurrentUserId(), await CurrentUserService.GetRoles());
-            
-            return await DepartmentService.ById<GetDepartmentModel>(id, userId, roles);
+            await CanAccessDepartmentElseThrow(id);
+            return await DepartmentService.ById<GetDepartmentModel>(id);
         }
 
         [HttpPost]
@@ -60,6 +59,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin)]
         public async Task Edit(EditDepartmentModel model)
         {
+            await CanAccessDepartmentElseThrow(model.Id);
             await DepartmentService.Edit(model);
         }
 
@@ -67,6 +67,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin)]
         public async Task Delete(int id)
         {
+            await CanAccessDepartmentElseThrow(id);
             await DepartmentService.Delete(id);
         }
 
@@ -74,6 +75,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task AddUserToDepartment(string userId, int id)
         {
+            await CanAccessDepartmentElseThrow(id);
             await DepartmentService.AddUserToDepartment(userId, id);
         }
 
@@ -81,6 +83,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task AddUserToDepartmentByEmail(string userName, int id)
         {
+            await CanAccessDepartmentElseThrow(id);
             await DepartmentService.AddUserToDepartmentByEmail(userName, id);
         }
 
@@ -88,6 +91,7 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task<List<UserModels.ByIdOut>> GetDepartmentUsers(int id)
         {
+            await CanAccessDepartmentElseThrow(id);
             return await DepartmentService.GetUsersByDepartment(id);
         }
 
@@ -95,8 +99,18 @@ namespace API.Controllers
         [AuthorizeRoles(RoleType.Admin, RoleType.DepartmentAdmin)]
         public async Task RemoveUserFromDepartment(int id, string userIdToDelete)
         {
-            var (userId, _) = (CurrentUserService.GetCurrentUserId(), await CurrentUserService.GetRoles());
-            await DepartmentService.RemoveUserFromDepartment(id, userIdToDelete, userId);
+            await CanAccessDepartmentElseThrow(id);
+            await DepartmentService.RemoveUserFromDepartment(id, userIdToDelete);
+        }
+
+        private async Task CanAccessDepartmentElseThrow(int departmentId)
+        {
+            var userId = CurrentUserService.GetCurrentUserId();
+            var roles = await CurrentUserService.GetRoles();
+
+            if (roles.Contains(RoleType.Admin)) return;
+
+            await DepartmentService.UserInDepartmentElseThrow(departmentId, userId);
         }
     }
 }
