@@ -50,7 +50,6 @@ namespace Thesis
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
-            app.UseWebSockets();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
